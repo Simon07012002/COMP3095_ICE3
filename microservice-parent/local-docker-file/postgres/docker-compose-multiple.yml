@@ -1,0 +1,25 @@
+# docker-compose -p postgres-single -f docker-compose-single.yml up -d
+services:
+
+  postgres:
+    image: postgres
+    ports:
+      - "5458:5432"
+    container_name: postgres-inventory
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=inventory-service
+    volumes:
+      - ./data/inventory:/var/lib/postgresql/data
+      - ./init/inventory/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8877:80"  # Default pgAdmin port is 80
+    container_name: pgadmin-inventory
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.ca
+      - PGADMIN_DEFAULT_PASSWORD=password
+
